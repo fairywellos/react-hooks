@@ -12,11 +12,14 @@ Create the app `create-react-app react-pmo`
 
 Add "api" to scripts of package.json `"api": "place-my-order-api --port 7070"`
 
-TODO: acquire assets, currently committed to this repo in `style`.
+**TODO: acquire assets, currently committed to this repo in `style`.**
 
-**TBD proxy API server.**
+**TODO proxy API server.**
 
 # Run
 
 Start the API server `npm run api`
 Start the application server `npm start`
+
+# Further
+Code splitting using react router (HOC): https://serverless-stack.com/chapters/code-splitting-in-create-react-app.html
