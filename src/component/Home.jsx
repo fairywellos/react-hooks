@@ -1,21 +1,28 @@
 
 
 import React from "react";
+import { NavLink } from "react-router-dom";
 
 
-/**
- * @typedef HomeProps
- */
+import heroImage from "../style/images/homepage-hero.jpg";
+
 
 /**
  * The default component of pmo.
- * @param {HomeProps} props
  * @returns {JSX.Element}
  */
-export default props => {
+export default () => {
     return (
         <div className="homepage">
-            <h1>home</h1>
+            <img alt="Restaurant table with glasses." src={heroImage} width="250" height="380"></img>
+            <h1>Ordering food has never been easier</h1>
+            <p>
+                We make it easier than ever to order gourmet food
+                from your favorite local restaurants.
+            </p>
+            <p>
+                <NavLink className="btn" role="button" to="/restaurants">Choose a Restaurant</NavLink>
+            </p>
         </div>
     );
 };
