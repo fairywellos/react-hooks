@@ -11,7 +11,7 @@ import heroImage from "../style/images/homepage-hero.jpg";
  * The default component of pmo.
  * @returns {JSX.Element}
  */
-export default () => {
+const Home = () => {
     return (
         <div className="homepage">
             <img alt="Restaurant table with glasses." src={heroImage} width="250" height="380"></img>
@@ -26,3 +26,8 @@ export default () => {
         </div>
     );
 };
+
+Home.propTypes = {};
+
+
+export { Home };

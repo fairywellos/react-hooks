@@ -1,6 +1,7 @@
 
 
 import React, { useState } from "react";
+// import PropTypes from "prop-types";
 
 
 const api = "/cities";
@@ -15,7 +16,7 @@ const api = "/cities";
  * @param {RestaurantsProps} props
  * @returns {JSX.Element}
  */
-export default props => {
+const Restaurants = props => {
     const [region, setRegion] = useState("");
     const [cities, setCities] = useState({});
     const [city, setCity] = useState("");
@@ -76,3 +77,8 @@ export default props => {
         </div>
     );
 }
+
+Restaurants.propTypes = {};
+
+
+export { Restaurants };

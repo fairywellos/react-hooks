@@ -12,10 +12,15 @@ import React from "react";
  * @param {OrderHistoryProps} props
  * @returns {JSX.Element}
  */
-export default props => {
+const OrderHistory = props => {
     return (
         <div className="order-history">
             <h1>order history</h1>
         </div>
     );
 };
+
+OrderHistory.propTypes = {};
+
+
+export { OrderHistory };

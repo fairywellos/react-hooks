@@ -1,6 +1,7 @@
 
 
 import React from "react";
+import PropTypes from "prop-types";
 import { NavLink, withRouter } from "react-router-dom";
 
 
@@ -13,7 +14,7 @@ import { NavLink, withRouter } from "react-router-dom";
  * @param {HeaderProps} props
  * @returns {JSX.Element}
  */
-export default withRouter(props => {
+const Header = withRouter(props => {
     const { pathname } = props.location;
 
     return (
@@ -29,3 +30,9 @@ export default withRouter(props => {
         </header>
     );
 });
+
+Header.propTypes = {
+    location: PropTypes.shape({ pathname: PropTypes.string.isRequired })
+};
+
+export { Header };
