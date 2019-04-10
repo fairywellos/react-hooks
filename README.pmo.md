@@ -14,7 +14,7 @@ Add "api" to scripts of package.json `"api": "place-my-order-api --port 7070"`
 
 **TODO: acquire assets, currently committed to this repo in `style`.**
 
-**TODO proxy API server.**
+Add "proxy" to the root of package.json `"proxy": "http://localhost:7070"`
 
 # Run
 
