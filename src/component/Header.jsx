@@ -1,7 +1,7 @@
 
 
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, withRouter } from "react-router-dom";
 
 
 /**
@@ -13,16 +13,19 @@ import { NavLink } from "react-router-dom";
  * @param {HeaderProps} props
  * @returns {JSX.Element}
  */
-export default props => {
+export default withRouter(props => {
+    const { pathname } = props.location;
+
     return (
         <header>
             <nav>
                 <h1>place-my-order.com</h1>
                 <ul>
-                    <li><NavLink activeClassName="active" to="/">Home</NavLink></li>
-                    <li><NavLink activeClassName="active" to="/restaurants">Restaurants</NavLink></li>
+                    <li className={pathname === "/" ? "active" : ""}><NavLink to="/">Home</NavLink></li>
+                    <li className={pathname === "/restaurants" ? "active" : ""}><NavLink to="/restaurants">Restaurants</NavLink></li>
+                    <li className={pathname === "/order-history" ? "active" : ""}><NavLink to="/order-history">Order History</NavLink></li>
                 </ul>
             </nav>
         </header>
     );
-}
+});

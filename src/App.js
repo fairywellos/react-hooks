@@ -3,6 +3,8 @@ import { BrowserRouter, Route } from "react-router-dom";
 import Header from "./component/Header";
 import Home from "./component/Home";
 import Restaurants from "./component/Restaurants";
+import OrderHistory from "./component/OrderHistory";
+
 
 class App extends Component {
   render() {
@@ -12,6 +14,7 @@ class App extends Component {
           <Header />
           <Route exact path="/" component={Home} />
           <Route path="/restaurants" component={Restaurants} />
+          <Route path="/order-history" component={OrderHistory} />
         </div>
       </BrowserRouter>
     );
