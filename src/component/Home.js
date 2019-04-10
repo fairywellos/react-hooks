@@ -1,5 +1,5 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import heroImage from "../style/images/homepage-hero.jpg";
 
@@ -17,7 +17,7 @@ function Home() {
                 from your favorite local restaurants.
             </p>
             <p>
-                <NavLink className="btn" role="button" to="/restaurants">Choose a Restaurant</NavLink>
+                <Link className="btn" role="button" to="/restaurants">Choose a Restaurant</Link>
             </p>
         </div>
     );
