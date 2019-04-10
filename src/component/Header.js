@@ -1,20 +1,12 @@
-
-
 import React from "react";
 import PropTypes from "prop-types";
 import { NavLink, withRouter } from "react-router-dom";
 
-
-/**
- * @typedef HeaderProps
- */
-
 /**
  * Displays information about the app and a menu of choices.
- * @param {HeaderProps} props
  * @returns {JSX.Element}
  */
-const Header = withRouter(props => {
+function Header (props) {
     const { pathname } = props.location;
 
     return (
@@ -29,10 +21,14 @@ const Header = withRouter(props => {
             </nav>
         </header>
     );
-});
+}
 
 Header.propTypes = {
-    location: PropTypes.shape({ pathname: PropTypes.string.isRequired })
+    location: PropTypes.shape({
+        pathname: PropTypes.string.isRequired
+    })
 };
 
-export { Header };
+const wrappedHeader = withRouter(Header);
+
+export { wrappedHeader as Header };

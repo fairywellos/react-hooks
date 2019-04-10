@@ -1,22 +1,12 @@
-
-
 import React, { useState } from "react";
-// import PropTypes from "prop-types";
-
 
 const api = "/cities";
 
-
-/**
- * @typedef RestaurantsProps
- */
-
 /**
  * Displays information about available restaurants.
- * @param {RestaurantsProps} props
  * @returns {JSX.Element}
  */
-const Restaurants = props => {
+function Restaurants (props) {
     const [region, setRegion] = useState("");
     const [cities, setCities] = useState({});
     const [city, setCity] = useState("");
@@ -77,8 +67,5 @@ const Restaurants = props => {
         </div>
     );
 }
-
-Restaurants.propTypes = {};
-
 
 export { Restaurants };

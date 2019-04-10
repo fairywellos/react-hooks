@@ -1,17 +1,13 @@
-
-
 import React from "react";
 import { NavLink } from "react-router-dom";
 
-
 import heroImage from "../style/images/homepage-hero.jpg";
-
 
 /**
  * The default component of pmo.
  * @returns {JSX.Element}
  */
-const Home = () => {
+function Home() {
     return (
         <div className="homepage">
             <img alt="Restaurant table with glasses." src={heroImage} width="250" height="380"></img>
@@ -25,9 +21,6 @@ const Home = () => {
             </p>
         </div>
     );
-};
-
-Home.propTypes = {};
-
+}
 
 export { Home };

@@ -16,10 +16,13 @@ Add "api" to scripts of package.json `"api": "place-my-order-api --port 7070"`
 
 Add "proxy" to the root of package.json `"proxy": "http://localhost:7070"`
 
+Change the default App.js to be a functional component.
+
 # Run
 
 Start the API server `npm run api`
 Start the application server `npm start`
 
-# Further
+# Future
+
 Code splitting using react router (HOC): https://serverless-stack.com/chapters/code-splitting-in-create-react-app.html
