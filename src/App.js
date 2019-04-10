@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Route } from "react-router-dom";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Header from "./component/Header";
 import Home from "./component/Home";
 import Restaurants from "./component/Restaurants";
@@ -12,9 +12,11 @@ class App extends Component {
       <BrowserRouter>
         <div className="App">
           <Header />
-          <Route exact path="/" component={Home} />
-          <Route path="/restaurants" component={Restaurants} />
-          <Route path="/order-history" component={OrderHistory} />
+          <Switch>
+            <Route exact path="/" component={Home} />
+            <Route path="/restaurants" component={Restaurants} />
+            <Route path="/order-history" component={OrderHistory} />
+          </Switch>
         </div>
       </BrowserRouter>
     );
