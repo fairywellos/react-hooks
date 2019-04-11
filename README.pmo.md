@@ -10,13 +10,19 @@ Create the app `create-react-app react-pmo`
 
 `npm i -S react-router-dom prop-types`
 
-Add "api" to scripts of package.json `"api": "place-my-order-api --port 7070"`
+`npm i -S place-my-order-assets`
 
-**TODO: acquire assets, currently committed to this repo in `style`.**
+# Develop
+
+Add "api" to scripts of package.json `"api": "place-my-order-api --port 7070"`
 
 Add "proxy" to the root of package.json `"proxy": "http://localhost:7070"`
 
 Change the default App.js to be a functional component.
+
+In index.js import the css file `import "place-my-order-assets/css/place-my-order-assets.css";`
+
+Add components! :)
 
 # Run
 

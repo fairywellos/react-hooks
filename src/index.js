@@ -4,7 +4,7 @@ import './index.css';
 import { App } from './App';
 import * as serviceWorker from './serviceWorker';
 
-import "place-my-order-assets/css/place-my-order-assets.css"
+import "place-my-order-assets/css/place-my-order-assets.css";
 
 ReactDOM.render(<App />, document.getElementById('root'));
 
