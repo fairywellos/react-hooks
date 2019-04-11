@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { constants } from "../constants";
 
-import heroImage from "place-my-order-assets/images/homepage-hero.jpg";
+import heroImageSrc from "place-my-order-assets/images/homepage-hero.jpg";
 
 /**
  * The default component of pmo.
@@ -11,7 +11,7 @@ import heroImage from "place-my-order-assets/images/homepage-hero.jpg";
 function Home() {
     return (
         <div className="homepage">
-            <img alt="Restaurant table with glasses." src={heroImage} width="250" height="380"></img>
+            <img alt="Restaurant table with glasses." src={heroImageSrc} width="250" height="380"></img>
             <h1>Ordering food has never been easier</h1>
             <p>
                 We make it easier than ever to order gourmet food
