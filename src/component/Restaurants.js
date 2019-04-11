@@ -2,17 +2,10 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { RestaurantListItem } from "./RestaurantListItem";
 
-const DEFAULT_SELECT_VALUE = "";
-
-/**
- * Information about the restaurants in a city.
- * @typedef {Object.<string, any[]>} RestaurantCityData
- */
-
-/**
- * Information about restaurants in a region's cities.
- * @typedef {Object.<string, RestaurantCityData>} RestaurantData
- */
+import thumbnail1Src from "place-my-order-assets/images/1-thumbnail.jpg";
+import thumbnail2Src from "place-my-order-assets/images/2-thumbnail.jpg";
+import thumbnail3Src from "place-my-order-assets/images/3-thumbnail.jpg";
+import thumbnail4Src from "place-my-order-assets/images/4-thumbnail.jpg";
 
 /**
  * Displays information about available restaurants.
@@ -22,7 +15,7 @@ function Restaurants (props) {
     const [cities, setCities] = useState({});
     const [city, setCity] = useState(DEFAULT_SELECT_VALUE);
     const [region, setRegion] = useState(DEFAULT_SELECT_VALUE);
-    /** @type {[RestaurantData, (value: RestaurantData) => void]} */
+    /** @type {[RestaurantRegionData, (value: RestaurantRegionData) => void]} */
     const [restaurants, setRestaurants] = useState({});
 
     function cityChange(evt) {
@@ -75,7 +68,7 @@ function Restaurants (props) {
     if (restaurants[region] && restaurants[region][city]) {
         restaurantList = restaurants[region][city].map(x => {
             const { address, images, name, slug } = x;
-            const rliProps = { address, name, selected: restaurantSelected, slug, thumbnail: images.thumbnail };
+            const rliProps = { address, name, selected: restaurantSelected, slug, thumbnail: IMAGE_SRC_MAP[images.thumbnail] };
             return (<RestaurantListItem key={region + city + slug} {...rliProps} />);
         });
     }
@@ -111,7 +104,34 @@ Restaurants.propTypes = {
 
 export { Restaurants };
 
+const DEFAULT_SELECT_VALUE = "";
+const IMAGE_SRC_MAP = Object.freeze({
+    "node_modules/place-my-order-assets/images/1-thumbnail.jpg": thumbnail1Src,
+    "node_modules/place-my-order-assets/images/2-thumbnail.jpg": thumbnail2Src,
+    "node_modules/place-my-order-assets/images/3-thumbnail.jpg": thumbnail3Src,
+    "node_modules/place-my-order-assets/images/4-thumbnail.jpg": thumbnail4Src
+});
+
 async function apiFetch(url) {
     const response = await fetch(url);
     return await response.json();
 }
+
+/**
+ * Response data from the API with information about the restaurants in a city.
+ * @typedef {object} RestaurantData
+ * @property {string} address
+ * @property {object} images
+ * @property {string} name
+ * @property {string} slug
+ */
+
+/**
+ * Information about the restaurants in a city.
+ * @typedef {Object.<string, RestaurantData[]>} RestaurantCityData
+ */
+
+/**
+ * Information about restaurants in a region's cities.
+ * @typedef {Object.<string, RestaurantCityData>} RestaurantRegionData
+ */
