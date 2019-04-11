@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { constants } from "../constants";
 
 import heroImage from "../style/images/homepage-hero.jpg";
 
@@ -17,7 +18,7 @@ function Home() {
                 from your favorite local restaurants.
             </p>
             <p>
-                <Link className="btn" role="button" to="/restaurants">Choose a Restaurant</Link>
+                <Link className="btn" role="button" to={`/${constants.pageRestaurants}`}>Choose a Restaurant</Link>
             </p>
         </div>
     );

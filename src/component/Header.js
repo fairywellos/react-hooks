@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Link, withRouter } from "react-router-dom";
+import { constants } from "../constants";
 
 /**
  * Displays information about the app and a menu of choices.
@@ -15,8 +16,8 @@ function Header (props) {
                 <h1>place-my-order.com</h1>
                 <ul>
                     <li className={pathname === "/" ? "active" : ""}><Link to="/">Home</Link></li>
-                    <li className={pathname === "/restaurants" ? "active" : ""}><Link to="/restaurants">Restaurants</Link></li>
-                    <li className={pathname === "/order-history" ? "active" : ""}><Link to="/order-history">Order History</Link></li>
+                    <li className={pathname.startsWith(`/${constants.pageRestaurants}`) ? "active" : ""}><Link to={`/${constants.pageRestaurants}`}>Restaurants</Link></li>
+                    <li className={pathname === `/${constants.pageOrderHistory}` ? "active" : ""}><Link to={`/${constants.pageOrderHistory}`}>Order History</Link></li>
                 </ul>
             </nav>
         </header>
