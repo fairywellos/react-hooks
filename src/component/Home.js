@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { constants } from "../constants";
 
-import heroImage from "../style/images/homepage-hero.jpg";
+import heroImage from "place-my-order-assets/images/homepage-hero.jpg";
 
 /**
  * The default component of pmo.
