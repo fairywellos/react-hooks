@@ -86,10 +86,10 @@ function Restaurants (props) {
         </div>
     );
 }
+
 export { Restaurants };
 
 async function apiFetch(url) {
     const response = await fetch(url);
     return await response.json();
 }
-
