@@ -10,7 +10,7 @@ import { constants } from "../constants";
 function RestaurantListItem (props) {
     const { address, name, selected, slug, thumbnail } = props;
 
-    const detailsClickHandler = () => {
+    function detailsClickHandler() {
         selected(props);
     }
 

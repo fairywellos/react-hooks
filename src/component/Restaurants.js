@@ -25,16 +25,16 @@ function Restaurants (props) {
     /** @type {[RestaurantData, (value: RestaurantData) => void]} */
     const [restaurants, setRestaurants] = useState({});
 
-    const cityChange = evt => {
+    function cityChange(evt) {
         const { value: nextCityValue } = evt.target;
         setCity(nextCityValue);
 
         if (nextCityValue && (!restaurants[region] || !restaurants[region][nextCityValue])) {
             fetchRestaurants(region, nextCityValue);
         }
-    };
+    }
 
-    const regionChange = evt => {
+    function regionChange(evt) {
         const { value: nextRegionValue } = evt.target;
         setRegion(nextRegionValue);
         setCity(DEFAULT_SELECT_VALUE);
@@ -42,19 +42,19 @@ function Restaurants (props) {
         if (nextRegionValue && !cities[nextRegionValue]) {
             fetchCities(nextRegionValue);
         }
-    };
+    }
 
-    const fetchCities = async cityRegion => {
+    async function fetchCities(cityRegion) {
         const body = await apiFetch(`/cities?filter[state]=${cityRegion}`);
         setCities({ ...cities, [cityRegion]: body.data });
-    };
+    }
 
-    const fetchRestaurants = async (filterRegion, filterCity) => {
+    async function fetchRestaurants(filterRegion, filterCity) {
         const body = await apiFetch(`/restaurants?filter[address.state]=${filterRegion}&filter[address.city]=${filterCity}`);
         setRestaurants({ ...restaurants, [filterRegion]: { [filterCity]: body.data } });
-    };
+    }
 
-    const restaurantSelected = rProps => {
+    function restaurantSelected(rProps) {
         const restaurant = restaurants[region][city].find(x => x.slug === rProps.slug);
         if (restaurant) {
             props.selected(restaurant);

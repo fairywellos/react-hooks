@@ -9,7 +9,7 @@ import { OrderHistory } from "./component/OrderHistory";
 
 
 function App() {
-  const restaurantSelected = rProps => {
+  function restaurantSelected(rProps) {
     console.log(rProps);
   };
 
