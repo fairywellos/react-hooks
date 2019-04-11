@@ -28,5 +28,5 @@
   "devDependencies": {
     "place-my-order-api": "^1.0.1"
   },
-  "proxy": "http://localhost:7171"
+  "proxy": "http://localhost:7070"
 }
