@@ -6,7 +6,7 @@ Create the app `create-react-app react-pmo`
 
 `cd react-pmo`
 
-`npm i -D place-my-order-api@1`
+`npm i -D place-my-order-api`
 
 `npm i -S react-router-dom prop-types`
 
