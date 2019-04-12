@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "place-my-order-assets": "^0.1.7",
+    "place-my-order-assets": "^0.2.0",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
@@ -27,7 +27,7 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "place-my-order-api": "^1.0.1"
+    "place-my-order-api": "^1.1.0"
   },
   "proxy": "http://localhost:7171"
 }
