@@ -15,7 +15,11 @@ export { AppContext };
 /**
  * Response data from the API with information about the restaurants in a city.
  * @typedef {object} RestaurantData
- * @property {string} address
+ * @property {object} address
+ * @property {string} address.city
+ * @property {string} address.state
+ * @property {string} address.street
+ * @property {string} address.zip
  * @property {object} resources
  * @property {string} name
  * @property {string} slug
