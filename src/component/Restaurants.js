@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { get as apiGet } from "../api";
 import { AppContext } from "../AppContext";
 import { RestaurantListItem } from "./RestaurantListItem";
@@ -7,12 +7,26 @@ import { RestaurantListItem } from "./RestaurantListItem";
  * Displays information about available restaurants.
  * @returns {JSX.Element}
  */
-function Restaurants (props) {
+function Restaurants () {
+    const [regions, setRegions] = useState([]);
     const [cities, setCities] = useState({});
     const [city, setCity] = useState(DEFAULT_SELECT_VALUE);
     const [region, setRegion] = useState(DEFAULT_SELECT_VALUE);
     /** @type {AppContextValue} */
     const context = useContext(AppContext);
+
+    useEffect(() => {
+        if (0 < regions.length) {
+            return;
+        }
+
+        async function getStates() {
+            const { data } = await apiGet("/states");
+            setRegions(data);
+        }
+
+        getStates();
+    });
 
     function cityChange(evt) {
         const { value: nextCity } = evt.target;
@@ -47,11 +61,14 @@ function Restaurants (props) {
     };
 
     let cityOptions = null;
-    if (region && cities && cities[region]) {
+    if (region) {
         cityOptions = (
             <>
-                <option value="">Choose a city</option>
-                {cities[region].map(x => (<option key={x.name} value={x.name}>{x.name}</option>))}
+                <option value="">{0 < Object.keys(cities).length ? "Choose a city" : LOADING_MESSAGE}</option>
+                {cities && cities[region] ?
+                    cities[region].map(x => (<option key={x.name} value={x.name}>{x.name}</option>)) :
+                    null
+                }
             </>
         );
     }
@@ -72,10 +89,8 @@ function Restaurants (props) {
                 <div className="form-group">
                     <label>State</label>
                     <select onChange={regionChange} value={region}>
-                        <option value="">Choose a state</option>
-                        <option value="IL">Illinois</option>
-                        <option value="MI">Michigan</option>
-                        <option value="WI">Wisconsin</option>
+                        <option value="">{0 < regions.length ? "Choose a state" : LOADING_MESSAGE}</option>
+                        {regions.map(x => (<option key={x.short} value={x.short}>{x.name}</option>))}
                     </select>
                 </div>
                 <div className="form-group">
@@ -93,6 +108,7 @@ function Restaurants (props) {
 export { Restaurants };
 
 const DEFAULT_SELECT_VALUE = "";
+const LOADING_MESSAGE = "Loading...";
 
 /**
  * @typedef {import('../AppContext').AppContextValue} AppContextValue
