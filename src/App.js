@@ -7,6 +7,7 @@ import { Header } from "./component/Header";
 import { Home } from "./component/Home";
 import { Restaurants } from "./component/Restaurants";
 import { RestaurantDetail } from "./component/RestaurantDetail";
+import { RestaurantOrder } from "./component/RestaurantOrder";
 import { OrderHistory } from "./component/OrderHistory";
 
 function App() {
@@ -56,7 +57,8 @@ function App() {
           <Switch>
             <Route exact path="/" component={Home} />
             <Route exact path={`/${constants.pageRestaurants}`} render={() => <Restaurants />} />
-            <Route path={`/${constants.pageRestaurants}/:slug`} render={() => <RestaurantDetail />} />
+            <Route exact path={`/${constants.pageRestaurants}/:slug`} render={() => <RestaurantDetail />} />
+            <Route exact path={`/${constants.pageRestaurants}/:slug/order`} render={() => <RestaurantOrder />} />
             <Route path={`/${constants.pageOrderHistory}`} component={OrderHistory} />
           </Switch>
         </AppContext.Provider>
@@ -111,7 +113,7 @@ function contextReducer(state, action) {
       break;
   }
 
-  return nextState || state
+  return nextState || state;
 }
 
 /**
