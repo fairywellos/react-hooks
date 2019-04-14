@@ -34,8 +34,8 @@ function Restaurants (props) {
     }
 
     async function fetchCities(cityRegion) {
-        const body = await apiGet(`/cities?filter[state]=${cityRegion}`);
-        setCities({ ...cities, [cityRegion]: body.data });
+        const { data } = await apiGet(`/cities?filter[state]=${cityRegion}`);
+        setCities({ ...cities, [cityRegion]: data });
     }
 
     const { restaurants } = context.restaurant;

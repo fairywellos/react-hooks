@@ -38,12 +38,12 @@ function App() {
       return;
     }
 
-    const body = await apiGet(`/restaurants?filter[address.state]=${region}&filter[address.city]=${city}`);
+    const { data } = await apiGet(`/restaurants?filter[address.state]=${region}&filter[address.city]=${city}`);
 
     dispatch({
       city,
       region,
-      restaurants: body.data,
+      restaurants: data,
       type: "restaurant-restaurants",
     });
   }
