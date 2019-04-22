@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { constants } from "../constants";
 
 import heroImageSrc from "place-my-order-assets/images/homepage-hero.jpg";
 
@@ -8,7 +7,7 @@ import heroImageSrc from "place-my-order-assets/images/homepage-hero.jpg";
  * The default component of pmo.
  * @returns {JSX.Element}
  */
-function Home() {
+export default function Home() {
     return (
         <div className="homepage">
             <img alt="Restaurant table with glasses." src={heroImageSrc} width="250" height="380"></img>
@@ -18,10 +17,8 @@ function Home() {
                 from your favorite local restaurants.
             </p>
             <p>
-                <Link className="btn" role="button" to={`/${constants.pageRestaurants}`}>Choose a Restaurant</Link>
+                <Link className="btn" role="button" to="/restaurants">Choose a Restaurant</Link>
             </p>
         </div>
     );
 }
-
-export { Home };

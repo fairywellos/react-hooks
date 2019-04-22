@@ -1,13 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
 import { get as apiGet } from "../api";
-import { AppContext } from "../AppContext";
-import { RestaurantListItem } from "./RestaurantListItem";
+import AppContext from "../AppContext";
+import RestaurantListItem from "./RestaurantListItem";
 
 /**
  * Displays information about available restaurants.
  * @returns {JSX.Element}
  */
-function Restaurants () {
+export default function Restaurants () {
     const [regions, setRegions] = useState([]);
     const [cities, setCities] = useState({});
     const [city, setCity] = useState(DEFAULT_SELECT_VALUE);
@@ -16,7 +16,8 @@ function Restaurants () {
     const context = useContext(AppContext);
 
     useEffect(() => {
-        if (0 < regions.length) {
+        // Fetch all regions (states) when the component is initially rendered.
+        if (regions.length) {
             return;
         }
 
@@ -28,59 +29,64 @@ function Restaurants () {
         getStates();
     });
 
-    function cityChange(evt) {
-        const { value: nextCity } = evt.target;
-        setCity(nextCity);
-
-        if (nextCity && region) {
-            context.restaurant.get(region, nextCity);
+    useEffect(() => {
+        // Fetch a region's cities when the region is selected by the user. 
+        if (!region || cities[region]) {
+            return;
         }
+
+        async function getCities() {
+            const { data } = await apiGet(`/cities?filter[state]=${region}`);
+            setCities({ ...cities, [region]: data });
+        }
+
+        getCities();
+    }, [region]);
+
+    function onCityChange(evt) {
+        setCity(evt.target.value);
+        context.getRestaurants(region, evt.target.value);
     }
 
-    function regionChange(evt) {
-        const { value: nextRegion } = evt.target;
-        setRegion(nextRegion);
+    function onRegionChange(evt) {
+        setRegion(evt.target.value);
         setCity(DEFAULT_SELECT_VALUE);
-
-        if (nextRegion && !cities[nextRegion]) {
-            fetchCities(nextRegion);
-        }
     }
 
-    async function fetchCities(cityRegion) {
-        const { data } = await apiGet(`/cities?filter[state]=${cityRegion}`);
-        setCities({ ...cities, [cityRegion]: data });
-    }
-
-    const { restaurants } = context.restaurant;
-    function restaurantSelected(rProps) {
-        const restaurant = restaurants[region][city].find(x => x.slug === rProps.slug);
+    const { restaurants } = context;
+    function restaurantSelected(slug) {
+        const restaurant = restaurants[region][city].find(x => x.slug === slug);
         if (restaurant) {
-            context.restaurant.setCurrent(region, city, restaurant.slug);
+            context.setCurrentRestaurant(region, city, restaurant.slug);
         }
     };
 
-    let cityOptions = null;
-    if (region) {
-        cityOptions = (
+    const cityOptions = region
+        ? (
             <>
                 <option value="">{0 < Object.keys(cities).length ? "Choose a city" : LOADING_MESSAGE}</option>
-                {cities && cities[region] ?
-                    cities[region].map(x => (<option key={x.name} value={x.name}>{x.name}</option>)) :
-                    null
+                {cities && cities[region]
+                    ? cities[region].map(({ name }) => (<option key={name} value={name}>{name}</option>))
+                    : null
                 }
             </>
-        );
-    }
+        )
+        : null;
 
-    let restaurantList = null;
-    if (restaurants[region] && restaurants[region][city]) {
-        restaurantList = restaurants[region][city].map(x => {
-            const { address, resources, name, slug } = x;
-            const itemProps = { address, name, selected: restaurantSelected, slug, thumbnail: resources.thumbnail };
-            return (<RestaurantListItem key={region + city + slug} {...itemProps} />);
-        });
-    }
+    const restaurantList = restaurants[region] && restaurants[region][city]
+        ? restaurants[region][city].map(({ address, resources, name, slug }) => {
+            return (
+                <RestaurantListItem
+                    address={address}
+                    key={region + city + slug}
+                    name={name}
+                    selected={restaurantSelected}
+                    slug={slug}
+                    thumbnail={resources.thumbnail}
+                />
+            );
+        })
+        : null;
 
     return (
         <div className="restaurants">
@@ -88,14 +94,14 @@ function Restaurants () {
             <form className="form">
                 <div className="form-group">
                     <label>State</label>
-                    <select onChange={regionChange} value={region}>
+                    <select onChange={onRegionChange} value={region}>
                         <option value="">{0 < regions.length ? "Choose a state" : LOADING_MESSAGE}</option>
-                        {regions.map(x => (<option key={x.short} value={x.short}>{x.name}</option>))}
+                        {regions.map(({ name, short }) => (<option key={short} value={short}>{name}</option>))}
                     </select>
                 </div>
                 <div className="form-group">
                     <label>City</label>
-                    <select disabled={!region} onChange={cityChange} value={city}>
+                    <select disabled={!region} onChange={onCityChange} value={city}>
                         {cityOptions}
                     </select>
                 </div>
@@ -104,8 +110,6 @@ function Restaurants () {
         </div>
     );
 }
-
-export { Restaurants };
 
 const DEFAULT_SELECT_VALUE = "";
 const LOADING_MESSAGE = "Loading...";

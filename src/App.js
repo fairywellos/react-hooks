@@ -1,53 +1,58 @@
-import React, { useReducer } from 'react';
+import React, { useEffect, useReducer } from 'react';
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-import { constants } from "./constants";
 import { get as apiGet } from "./api";
-import { AppContext } from "./AppContext";
-import { Header } from "./component/Header";
-import { Home } from "./component/Home";
-import { Restaurants } from "./component/Restaurants";
-import { RestaurantDetail } from "./component/RestaurantDetail";
-import { RestaurantOrder } from "./component/RestaurantOrder";
-import { OrderHistory } from "./component/OrderHistory";
+import AppContext from "./AppContext";
+import Header from "./component/Header";
+import Home from "./component/Home";
+import Restaurants from "./component/Restaurants";
+import RestaurantDetail from "./component/RestaurantDetail";
+import RestaurantOrder from "./component/RestaurantOrder";
+import OrderHistory from "./component/OrderHistory";
 
-function App() {
+export default function App() {
   const [context, dispatch] = useReducer(contextReducer, {
-    restaurant: {
-      current: {},
-      restaurants: {}
+    currentRestaurant: {},
+    getRestaurants: (region, city) => {
+      dispatch({
+        city,
+        region,
+        restaurants: null,
+        type: "update-restaurants",
+      });
     },
+    restaurants: {},
+    setCurrentRestaurant: (region, city, slug) => {
+      dispatch({
+        city,
+        region,
+        slug,
+        type: "set-current-restaurant",
+      });
+    }
   });
 
-  // Update context functions here otherwise they will be stale and will keep a
-  // reference to the initial context (these functions are not changed by the
-  // reducer).
-  context.restaurant.get = (region, city) => {
-    getRestaurants(region, city);
-  };
+  useEffect(() => {
+    const { restaurants } = context;
+    for (let region in restaurants) {
+      for (let city in restaurants[region]) {
+        if (restaurants[region][city]) {
+          continue;
+        }
 
-  context.restaurant.setCurrent = (region, city, slug) => {
-    dispatch({
-      city,
-      region,
-      slug,
-      type: "restaurant-current",
-    });
-  }
+        console.log(`get restaurants: ${region}, ${city}`);
 
-  async function getRestaurants(region, city) {
-    if (context.restaurant.restaurants[region] && context.restaurant.restaurants[region][city]) {
-      return;
+        apiGet(`/restaurants?filter[address.state]=${region}&filter[address.city]=${city}`)
+          .then(({ data }) => {
+            dispatch({
+              city,
+              region,
+              restaurants: data,
+              type: "update-restaurants",
+            });
+          });
+      }
     }
-
-    const { data } = await apiGet(`/restaurants?filter[address.state]=${region}&filter[address.city]=${city}`);
-
-    dispatch({
-      city,
-      region,
-      restaurants: data,
-      type: "restaurant-restaurants",
-    });
-  }
+  }, [context.restaurants]);
 
   return (
     <BrowserRouter>
@@ -55,11 +60,11 @@ function App() {
         <Header />
         <AppContext.Provider value={context}>
           <Switch>
-            <Route exact path="/" component={Home} />
-            <Route exact path={`/${constants.pageRestaurants}`} render={() => <Restaurants />} />
-            <Route exact path={`/${constants.pageRestaurants}/:slug`} render={() => <RestaurantDetail />} />
-            <Route exact path={`/${constants.pageRestaurants}/:slug/order`} render={() => <RestaurantOrder />} />
-            <Route path={`/${constants.pageOrderHistory}`} component={OrderHistory} />
+            <Route exact path="/restaurants" render={() => <Restaurants />} />
+            <Route exact path={`/restaurants/:slug`} render={() => <RestaurantDetail />} />
+            <Route path={`/restaurants/:slug/order`} render={() => <RestaurantOrder />} />
+            <Route path="/order-history" component={OrderHistory} />
+            <Route path="/" component={Home} />
           </Switch>
         </AppContext.Provider>
       </div>
@@ -67,11 +72,9 @@ function App() {
   );
 }
 
-export { App };
-
 /**
  * @param {AppContextValue} state 
- * @param {{ city: string; region: string; slug: string; type: "restaurant-current"} | { city: string; region: string; restaurants: RestaurantData[]; type: "restaurant-restaurants"}} action 
+ * @param {{ city: string; region: string; slug: string; type: "set-current-restaurant"} | { city: string; region: string; restaurants: RestaurantData[]; type: "update-restaurants"}} action 
  * @returns {AppContextValue}
  */
 function contextReducer(state, action) {
@@ -79,32 +82,30 @@ function contextReducer(state, action) {
   let nextState;
   switch(action.type) {
 
-    case "restaurant-current": {
+    case "set-current-restaurant": {
       const { city, region, slug } = action;
-      const { restaurant } = state;
-      const { current } = restaurant;
+      const { currentRestaurant } = state;
       if (
-        (city && city !== current.city) ||
-        (region && region !== current.region) ||
-        (slug && slug !== current.slug)
+        (city && city !== currentRestaurant.city) ||
+        (region && region !== currentRestaurant.region) ||
+        (slug && slug !== currentRestaurant.slug)
       ) {
-        nextState = { ...state };
-        nextState.restaurant = { ...restaurant, ...{ current: { city, region, slug } } };
+        nextState = { ...state, ...{ currentRestaurant: { city, region, slug } } };
       }
       break;
     }
 
-    case "restaurant-restaurants": {
+    case "update-restaurants": {
       const { city, region } = action;
-      const { restaurant } = state;
-      const { restaurants } = restaurant;
-      if (!restaurants[region] || !restaurants[region][city]) {
-        const nextRestaurants = { ...restaurants };
-        nextRestaurants[region] = { ...restaurants[region] };
-        nextRestaurants[region][city] = action.restaurants;
-
-        nextState = { ...state };
-        nextState.restaurant = { ...restaurant, ...{ restaurants: nextRestaurants } };
+      if (city && region) {
+        const { restaurants } = state;
+        if (!restaurants[region] || !restaurants[region][city]) {
+          const nextRestaurants = { ...restaurants };
+          nextRestaurants[region] = { ...restaurants[region] };
+          nextRestaurants[region][city] = action.restaurants;
+  
+          nextState = { ...state, ...{ restaurants: nextRestaurants } };
+        }
       }
       break;
     }

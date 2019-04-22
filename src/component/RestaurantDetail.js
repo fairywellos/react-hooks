@@ -1,16 +1,16 @@
 import React, { useContext } from "react";
-import { AppContext } from "../AppContext";
+import AppContext from "../AppContext";
 
 /**
  * Displays information about a single restaurant.
  * @returns {JSX.Element}
  */
-function RestaurantDetail(props) {
+export default function RestaurantDetail(props) {
     /** @type {AppContextValue} */
     const context = useContext(AppContext);
-    const { city, region, slug } = context.restaurant.current;
+    const { city, region, slug } = context.currentRestaurant;
 
-    const restaurant = context.restaurant.restaurants[region][city].find(x => x.slug === slug);
+    const restaurant = context.restaurants[region][city].find(x => x.slug === slug);
 
     const headerProps = {
         className: "restaurant-header",
@@ -47,8 +47,6 @@ function RestaurantDetail(props) {
         </>
     );
 }
-
-export { RestaurantDetail };
 
 /**
  * @typedef {import('../AppContext').AppContextValue} AppContextValue

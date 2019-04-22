@@ -1,16 +1,12 @@
 import React from 'react';
 
 /** @type {AppContextValue} */
-const AppContext = React.createContext({
-    restaurant: {
-        current: {},
-        get: (region, city) => {},
-        restaurants: {},
-        setCurrent: (region, city, slug) => {}
-    }
+export default React.createContext({
+    currentRestaurant: {},
+    getRestaurants: (region, city) => {},
+    restaurants: {},
+    setCurrentRestaurant: (region, city, slug) => {}
 });
-
-export { AppContext };
 
 /**
  * Response data from the API with information about the restaurants in a city.
@@ -36,17 +32,12 @@ export { AppContext };
  */
 
 /**
- * @typedef {object} RestaurantContextValue
- * @property {object} current
- * @property {string} current.city
- * @property {string} current.region
- * @property {string} current.slug
- * @property {(region: string, city: string) => void} get
- * @property {RestaurantRegionData} restaurants
- * @property {(region: string, city: string, slug: string) => void} setCurrent
- */
-
-/**
  * @typedef {object} AppContextValue
- * @property {RestaurantContextValue} restaurant
+ * @property {object} currentRestaurant
+ * @property {string} currentRestaurant.city
+ * @property {string} currentRestaurant.region
+ * @property {string} currentRestaurant.slug
+ * @property {(region: string, city: string) => void} getRestaurants
+ * @property {RestaurantRegionData} restaurants
+ * @property {(region: string, city: string, slug: string) => void} setCurrentRestaurant
  */
