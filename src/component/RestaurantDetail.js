@@ -1,4 +1,5 @@
 import React, { useContext } from "react";
+import { Link } from "react-router-dom";
 import AppContext from "../AppContext";
 
 /**
@@ -41,7 +42,7 @@ export default function RestaurantDetail(props) {
                     Description for {restaurant.name}
                 </p>
                 <p className="order-link">
-                    <a className="btn" href={`${restaurant.slug}/order`}>Order from {restaurant.name}</a>
+                    <Link className="btn" to={`${restaurant.slug}/order`}>Order from {restaurant.name}</Link>
                 </p>
             </div>
         </>
