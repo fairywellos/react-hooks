@@ -10,8 +10,8 @@ import RestaurantListItem from "./RestaurantListItem";
 export default function Restaurants () {
     const [regions, setRegions] = useState([]);
     const [cities, setCities] = useState({});
-    const [city, setCity] = useState(DEFAULT_SELECT_VALUE);
-    const [region, setRegion] = useState(DEFAULT_SELECT_VALUE);
+    const [city, setCity] = useState("");
+    const [region, setRegion] = useState("");
     /** @type {AppContextValue} */
     const context = useContext(AppContext);
 
@@ -46,7 +46,7 @@ export default function Restaurants () {
 
     function onRegionChange(evt) {
         setRegion(evt.target.value);
-        setCity(DEFAULT_SELECT_VALUE);
+        setCity("");
     }
 
     const { restaurants } = context;
@@ -107,7 +107,6 @@ export default function Restaurants () {
     );
 }
 
-const DEFAULT_SELECT_VALUE = "";
 const LOADING_MESSAGE = "Loading...";
 
 /**
