@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { get as apiGet } from "../api";
+import { getCities, getStates } from "../model/api";
 import AppContext from "../AppContext";
 import RestaurantListItem from "./RestaurantListItem";
 
@@ -21,12 +21,10 @@ export default function Restaurants () {
             return;
         }
 
-        async function getStates() {
-            const { data } = await apiGet("/states");
-            setRegions(data);
-        }
-
-        getStates();
+        getStates()
+            .then(data => {
+                setRegions(data);
+            });
     });
 
     useEffect(() => {
@@ -35,12 +33,10 @@ export default function Restaurants () {
             return;
         }
 
-        async function getCities() {
-            const { data } = await apiGet(`/cities?filter[state]=${region}`);
-            setCities({ ...cities, [region]: data });
-        }
-
-        getCities();
+        getCities(region)
+            .then(data => {
+                setCities({ ...cities, [region]: data });
+            });
     }, [region]);
 
     function onCityChange(evt) {
@@ -82,7 +78,7 @@ export default function Restaurants () {
                     name={name}
                     selected={restaurantSelected}
                     slug={slug}
-                    thumbnail={resources.thumbnail}
+                    thumbnail={`/${resources.thumbnail}`}
                 />
             );
         })

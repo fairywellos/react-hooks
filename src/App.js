@@ -1,6 +1,6 @@
 import React, { useEffect, useReducer } from 'react';
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-import { get as apiGet } from "./api";
+import { getRestaurants } from "./model/api";
 import AppContext from "./AppContext";
 import Header from "./component/Header";
 import Home from "./component/Home";
@@ -41,12 +41,12 @@ export default function App() {
 
         console.log(`get restaurants: ${region}, ${city}`);
 
-        apiGet(`/restaurants?filter[address.state]=${region}&filter[address.city]=${city}`)
-          .then(({ data }) => {
+        getRestaurants(region, city)
+          .then(restaurants => {
             dispatch({
               city,
               region,
-              restaurants: data,
+              restaurants,
               type: "update-restaurants",
             });
           });
@@ -56,18 +56,16 @@ export default function App() {
 
   return (
     <BrowserRouter>
-      <div>
-        <Header />
-        <AppContext.Provider value={context}>
-          <Switch>
-            <Route exact path="/restaurants" render={() => <Restaurants />} />
-            <Route exact path={`/restaurants/:slug`} render={() => <RestaurantDetail />} />
-            <Route path={`/restaurants/:slug/order`} render={() => <RestaurantOrder />} />
-            <Route path="/order-history" component={OrderHistory} />
-            <Route path="/" component={Home} />
-          </Switch>
-        </AppContext.Provider>
-      </div>
+      <AppContext.Provider value={context}>
+        <Route component={Header} path={["/restaurants", "/order-history", "/"]} />
+        <Switch>
+          <Route path="/restaurants/:slug/order" component={RestaurantOrder} />
+          <Route path="/restaurants/:slug" component={RestaurantDetail} />
+          <Route path="/restaurants" component={Restaurants} />
+          <Route path="/order-history" component={OrderHistory} />
+          <Route path="/" component={Home} />
+        </Switch>
+      </AppContext.Provider>
     </BrowserRouter>
   );
 }
